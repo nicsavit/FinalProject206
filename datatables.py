@@ -1,5 +1,7 @@
 import json
 import requests
+import sqlite3
+import os
 
 #Historical Weather API
 
@@ -30,6 +32,7 @@ import requests
 
 
 
+# #https://corona.lmao.ninja/docs/#/COVID-19%3A%20NYT/get_v3_covid_19_nyt_counties__county_
 
 ####THESE BOTTOM TWO WORK EVERYTHING ELSE IS JUST AN OPTION#####
 
@@ -38,14 +41,31 @@ import requests
 #COVID DATA for Specific County
 
 
+def get_countydata(county, days):
+    api_result_covid_county = requests.get(f"https://disease.sh/v3/covid-19/nyt/counties/{county}?lastdays={days}")
+    data = api_result_covid_county.json()
+    print(data)
+    return data
 
-# api_result_covid_county = requests.get("https://disease.sh/v3/covid-19/nyt/counties/Washtenaw?lastdays=10")
-# api_response_covid_county = api_result_covid_county.json()
-# #print(api_response_covid_county)
+#COVID Mobility Data 
 
-# #the apple one has mobility data too 
-# #https://corona.lmao.ninja/docs/#/COVID-19%3A%20NYT/get_v3_covid_19_nyt_counties__county_
+def get_mobilitydata(country, subregion):
+    api_mobility = requests.get('https://disease.sh/v3/covid-19/apple/countries/US/Ann%20Arbor')
+    mobility_data = api_mobility.json()
+    print(mobility_data)
+    return mobility_data
 
-# api_mobility = requests.get('https://disease.sh/v3/covid-19/apple/countries/US/Ann%20Arbor')
-# r = api_mobility.json()
-# print(r)
+#DataBases
+def setUpDatabase(db_name):
+    path = os.path.dirname(os.path.abspath(__file__))
+    conn = sqlite3.connect(path+'/'+db_name)
+    cur = conn.cursor()
+    return cur, conn
+
+
+# def setUpCovidCountyTable(data, cur, conn):
+#     cur.execute("DROP TABLE IF EXISTS County")
+#     cur.execute("CREATE TABLE County (id INTEGER PRIMARY KEY, county TEXT, state TEXT)")
+#     for i in range(len(category_list)):
+#         cur.execute("INSERT INTO Categories (id,title) VALUES (?,?)",(i,category_list[i]))
+#     conn.commit()
