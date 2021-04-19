@@ -66,8 +66,8 @@ def setUpCountyTable(cur,conn):
     counties = [
         "Washtenaw",
         "Cuyahoga",
-        "Hennipen",
-        "Grant"
+        "Hennepin",
+        "Broward"
     ]
     cur.execute("DROP TABLE IF EXISTS County")
     cur.execute("CREATE TABLE County (id INTEGER PRIMARY KEY, county TEXT)")
@@ -81,17 +81,18 @@ def setUpCovidCountyTable(cur, conn):
      counties = [
         "Washtenaw",
         "Cuyahoga",
-        "Hennipen",
-        "Grant"
+        "Hennepin",
+        "Broward"
     ]
      for c in counties:
         data = get_countydata(c, 30)
-
-        for day in data:
         
-            cur.execute('SELECT id FROM County WHERE county = ?', (str(day['county']),))
+        for day in data:
+            
+        
+            cur.execute('SELECT id FROM County WHERE county = ?', (day['county'],))
             county_id = cur.fetchone()[0]
-        #print(county_id)
+            
             cur.execute('INSERT INTO Covid (id, date, cases, deaths) VALUES (?,?,?,?)', (county_id, day['date'], int(day['cases']), int(day['deaths']))) 
            
      conn.commit()
