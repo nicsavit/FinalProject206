@@ -3,57 +3,21 @@ import requests
 import sqlite3
 import os
 
-#Historical Weather API
-
-# api_key = '777134bd57cb4678b1e144946211404'
-# location = "Honolulu, Hawaii"
-# date = '2015-01-21'
-# api_result = requests.get('http://api.worldweatheronline.com/premium/v1/past-weather.ashx'.format(api_key,location,date))
-# api_response = api_result.json()
-# print(api_response)
-
-#Another Weather API
-# api = requests.get("http://api.weatherapi.com/v1/current.json?key=1fe175ea71524c4691144044211604&q=Charleston")
-# r = api.json()
-# print(r)
-
-
-#COVID STATES DAILY
-# api_3 = requests.get("https://covidtracking.com/api/states/daily")
-# api_r= api_3.json()
-# for d in api_r[:5]:
-#     print(d)
-
-#By single state by date
-
-
-# api = requests.get('https://api.covidtracking.com/v1/states/ca/20210101.json')
-# print(api.text)
-
-
-
-# #https://corona.lmao.ninja/docs/#/COVID-19%3A%20NYT/get_v3_covid_19_nyt_counties__county_
-
-####THESE BOTTOM TWO WORK EVERYTHING ELSE IS JUST AN OPTION#####
-
+# Weather API
+def get_county_weather(lat, lon, start_date, end_date):
+    api_result = requests.get(f'https://api.weatherbit.io/v2.0/history/daily?&lat={lat}&lon={lon}&start_date={start_date}&end_date={end_date}&key=ab0294577d37449cb2e5ed6fad640afa')
+    data = api_result.json()
+    print(data)
+    return data
 
 
 #COVID DATA for Specific County
-
 
 def get_countydata(county, days):
     api_result_covid_county = requests.get(f"https://disease.sh/v3/covid-19/nyt/counties/{county}?lastdays={days}")
     data = api_result_covid_county.json()
     
     return data
-
-#COVID Mobility Data 
-
-# def get_mobilitydata(country, subregion):
-#     api_mobility = requests.get('https://disease.sh/v3/covid-19/apple/countries/US/Ann%20Arbor')
-#     mobility_data = api_mobility.json()
-#     print(mobility_data)
-#     return mobility_data
 
 #DataBases
 def setUpDatabase(db_name):
@@ -102,3 +66,7 @@ def setUpCovidCountyTable(cur, conn):
 cur, conn = setUpDatabase('covid.db')
 setUpCountyTable(cur,conn)
 setUpCovidCountyTable(cur, conn)
+get_county_weather(43.308, 83.847, 2021-03-20, 2021-04-18)
+
+
+
