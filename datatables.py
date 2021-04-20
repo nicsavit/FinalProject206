@@ -13,7 +13,6 @@ def get_countydata(county, days):
 	data = api_result_covid_county.json()
 	
 	return data
-	
 #COVID Mobility Data
 
 def get_mobilitydata(subregion):
@@ -22,10 +21,12 @@ def get_mobilitydata(subregion):
 	 #print(mobility_data)
 	 return mobility_data
 
-#Crime Data
-# api_crime = requests.get('https://api.usa.gov/crime/fbi/sapi/')
-# crime_data = api_crime.json()
-# print(crime_data)
+#Vaccine Data
+def get_vaccinedata(state, days):
+	api_vaccine = requests.get(f'https://disease.sh/v3/covid-19/vaccine/coverage/states/{state}?lastdays={days}')
+	vaccine_data = api_vaccine.json()
+	print(vaccine_data)
+	return vaccine_data
 
 #DataBases
 def setUpDatabase(db_name):
@@ -85,7 +86,20 @@ def setUpMobilityTable(cur,conn):
 			cur.execute('INSERT INTO Mobility (subregion, date, driving, transit, walking) VALUES (?,?,?,?,?)', (day['subregion_and_city'],day['date'], float(day['driving']), float(day['transit']),float(day['walking']))) 
 	conn.commit()
 
-
+def setUpVaccineTable(cur,conn):
+	#cur.execute("DROP TABLE IF EXISTS Vaccination")
+	#cur.execute("CREATE TABLE Vaccination (state TEXT, date TEXT, doses_admin INTEGER")
+	states = [
+		"Michigan",
+		"Ohio",
+		"Minnesota",
+		"Arizona"
+	]
+	# for s in states:
+	# 	data = get_vaccinedata(s,30)
+	# 	for key in data['timeline']:
+	# 		print(key)
+			#cur.execute('INSERT INTO Vaccination (date, doses_admin) VALUES (?,?)', (day['']))
 
 def covid_visualization(cur, conn):
 	x = ["Washtenaw", "Cuyahoga", "Hennepin", "Maricopa"]
@@ -144,12 +158,11 @@ def covid_visualization(cur, conn):
 
 
 	y_pos = np.arange(len(avg_covid_increase))
-	plt.bar(y_pos, avg_covid_increase, color = 'red')
+	plt.bar(y_pos, avg_covid_increase, color = 'blue')
 	plt.xlabel("Counties")
 	plt.ylabel("Average Increase of Cases")
 	plt.title("Average Increase of Cases by County")
 	plt.xticks([0,1,2,3], x)
-	#plt.yticks(y_tick, y)
 	plt.show()
 
 
@@ -157,4 +170,6 @@ cur, conn = setUpDatabase('covid.db')
 setUpCountyTable(cur,conn)
 setUpCovidCountyTable(cur, conn)
 setUpMobilityTable(cur,conn)
-covid_visualization(cur, conn)
+#covid_visualization(cur, conn)
+#get_vaccinedata('Arizona', 30)
+setUpVaccineTable(cur,conn)
