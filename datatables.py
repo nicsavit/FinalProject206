@@ -87,19 +87,21 @@ def setUpMobilityTable(cur,conn):
 	conn.commit()
 
 def setUpVaccineTable(cur,conn):
-	#cur.execute("DROP TABLE IF EXISTS Vaccination")
-	#cur.execute("CREATE TABLE Vaccination (state TEXT, date TEXT, doses_admin INTEGER")
+	cur.execute("DROP TABLE IF EXISTS Vaccination")
+	cur.execute("CREATE TABLE Vaccination (state TEXT, date TEXT, doses_admin INTEGER)")
 	states = [
 		"Michigan",
 		"Ohio",
 		"Minnesota",
 		"Arizona"
 	]
-	# for s in states:
-	# 	data = get_vaccinedata(s,30)
-	# 	for key in data['timeline']:
-	# 		print(key)
-			#cur.execute('INSERT INTO Vaccination (date, doses_admin) VALUES (?,?)', (day['']))
+	for s in states:
+		data = get_vaccinedata(s,30)
+		print(data)
+		for key in data:
+			print(key)
+			cur.execute('INSERT INTO Vaccination (state, date, doses_admin) VALUES (?,?,?)', (key['state'], key['timeline'], int(key['timeline'][1])))
+	conn.commit()
 
 def covid_visualization(cur, conn):
 	x = ["Washtenaw", "Cuyahoga", "Hennepin", "Maricopa"]
@@ -170,6 +172,6 @@ cur, conn = setUpDatabase('covid.db')
 setUpCountyTable(cur,conn)
 setUpCovidCountyTable(cur, conn)
 setUpMobilityTable(cur,conn)
-#covid_visualization(cur, conn)
-#get_vaccinedata('Arizona', 30)
+covid_visualization(cur, conn)
+get_vaccinedata('Arizona', 30)
 setUpVaccineTable(cur,conn)
