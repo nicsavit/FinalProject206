@@ -25,7 +25,7 @@ def get_mobilitydata(subregion):
 def get_vaccinedata(state, days):
 	api_vaccine = requests.get(f'https://disease.sh/v3/covid-19/vaccine/coverage/states/{state}?lastdays={days}')
 	vaccine_data = api_vaccine.json()
-	print(vaccine_data)
+	
 	return vaccine_data
 
 #DataBases
@@ -97,11 +97,11 @@ def setUpVaccineTable(cur,conn):
 	]
 	for s in states:
 		data = get_vaccinedata(s,30)
-		print(data)
-		for key in data:
-			print(key)
-			cur.execute('INSERT INTO Vaccination (state, date, doses_admin) VALUES (?,?,?)', (key['state'], key['timeline'], int(key['timeline'][1])))
-	conn.commit()
+		# print(data['state'])
+		# cur.execute('INSERT INTO Vaccination (state) VALUES (?)', (data['state']))
+		for key in data['timeline']:
+			cur.execute('INSERT INTO Vaccination (state, date, doses_admin) VALUES (?,?,?)', (data['state'], key, int(data['timeline'][key])))
+		conn.commit()
 
 def covid_visualization(cur, conn):
 	x = ["Washtenaw", "Cuyahoga", "Hennepin", "Maricopa"]
@@ -160,7 +160,7 @@ def covid_visualization(cur, conn):
 
 
 	y_pos = np.arange(len(avg_covid_increase))
-	plt.bar(y_pos, avg_covid_increase, color = 'blue')
+	plt.bar(y_pos, avg_covid_increase, color = 'pink')
 	plt.xlabel("Counties")
 	plt.ylabel("Average Increase of Cases")
 	plt.title("Average Increase of Cases by County")
@@ -172,6 +172,6 @@ cur, conn = setUpDatabase('covid.db')
 setUpCountyTable(cur,conn)
 setUpCovidCountyTable(cur, conn)
 setUpMobilityTable(cur,conn)
-covid_visualization(cur, conn)
+#covid_visualization(cur, conn)
 get_vaccinedata('Arizona', 30)
 setUpVaccineTable(cur,conn)
