@@ -149,7 +149,7 @@ def mobility_visualization(cur, conn):
 	str_final_0 = str(final_walking_value_for_city_0)
 	strip_inital_0 = str_inital_0.strip('(),')
 	strip_final_0 = str_final_0.strip('(),')
-	total_walking_change_0 = int(strip_final_0) - int(strip_inital_0)
+	total_walking_change_0 = float(strip_final_0) - float(strip_inital_0)
 	average_walking_change_0 = total_walking_change_0/len(all_walking_for_city_0)
 	avg_walking_increase.append(average_walking_change_0)
 
@@ -161,7 +161,7 @@ def mobility_visualization(cur, conn):
 	str_final_1 = str(final_walking_value_for_city_1)
 	strip_inital_1 = str_inital_1.strip('(),')
 	strip_final_1 = str_final_1.strip('(),')
-	total_walking_change_1 = int(strip_final_1) - int(strip_inital_1)
+	total_walking_change_1 = float(strip_final_1) - float(strip_inital_1)
 	average_walking_change_1 = total_walking_change_1/len(all_walking_for_city_1)
 	avg_walking_increase.append(average_walking_change_1)
 
@@ -173,7 +173,7 @@ def mobility_visualization(cur, conn):
 	str_final_2 = str(final_walking_value_for_city_2)
 	strip_inital_2 = str_inital_2.strip('(),')
 	strip_final_2 = str_final_2.strip('(),')
-	total_walking_change_2 = int(strip_final_2) - int(strip_inital_2)
+	total_walking_change_2 = float(strip_final_2) - float(strip_inital_2)
 	average_walking_change_2 = total_walking_change_2/len(all_walking_for_city_2)
 	avg_walking_increase.append(average_walking_change_2)
 
@@ -185,7 +185,7 @@ def mobility_visualization(cur, conn):
 	str_final_3 = str(final_walking_value_for_city_3)
 	strip_inital_3 = str_inital_3.strip('(),')
 	strip_final_3 = str_final_3.strip('(),')
-	total_walking_change_3 = int(strip_final_3) - int(strip_inital_3)
+	total_walking_change_3 = float(strip_final_3) - float(strip_inital_3)
 	average_walking_change_3 = total_walking_change_3/len(all_walking_for_city_3)
 	avg_walking_increase.append(average_walking_change_3)
 
@@ -193,7 +193,7 @@ def mobility_visualization(cur, conn):
 
 
 	y_pos = np.arange(len(avg_walking_increase))
-	plt.bar(y_pos, avg_walking_increase, color = 'pink')
+	plt.bar(y_pos, avg_walking_increase, color = 'orange')
 	plt.xlabel("Counties")
 	plt.ylabel("Average Change in Walking")
 	plt.title("Average Change in Walking by City")
