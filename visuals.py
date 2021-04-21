@@ -4,7 +4,7 @@ import sqlite3
 import os
 import matplotlib.pyplot as plt
 import numpy as np
-import datatables
+from datatables import *
 
 def covid_visualization(cur, conn):
 	x = ["Washtenaw", "Cuyahoga", "Hennepin", "Maricopa"]
@@ -136,6 +136,71 @@ def vaccine_visualization(cur, conn):
 	plt.xticks([0,1,2,3], x)
 	plt.show()
 
+def mobility_visualization(cur, conn):
+	x = ["Ann Arbor", "Cleveland", "Minneapolis", "Phoenix"]
+	y = [0, 50, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750]
+	avg_walking_increase = []
+
+	city_0 = cur.execute('SELECT walking FROM Mobility WHERE subregion = "Ann Arbor"')
+	all_walking_for_city_0 = city_0.fetchall()
+	initial_walking_value_for_city_0 = all_walking_for_city_0[0]
+	final_walking_value_for_city_0 = all_walking_for_city_0[-1]
+	str_inital_0 = str(initial_walking_value_for_city_0)
+	str_final_0 = str(final_walking_value_for_city_0)
+	strip_inital_0 = str_inital_0.strip('(),')
+	strip_final_0 = str_final_0.strip('(),')
+	total_walking_change_0 = int(strip_final_0) - int(strip_inital_0)
+	average_walking_change_0 = total_walking_change_0/len(all_walking_for_city_0)
+	avg_walking_increase.append(average_walking_change_0)
+
+	city_1 = cur.execute('SELECT walking FROM Mobility WHERE subregion = "Cleveland"')
+	all_walking_for_city_1 = city_1.fetchall()
+	initial_walking_value_for_city_1 = all_walking_for_city_1[0]
+	final_walking_value_for_city_1 = all_walking_for_city_1[-1]
+	str_inital_1 = str(initial_walking_value_for_city_1)
+	str_final_1 = str(final_walking_value_for_city_1)
+	strip_inital_1 = str_inital_1.strip('(),')
+	strip_final_1 = str_final_1.strip('(),')
+	total_walking_change_1 = int(strip_final_1) - int(strip_inital_1)
+	average_walking_change_1 = total_walking_change_1/len(all_walking_for_city_1)
+	avg_walking_increase.append(average_walking_change_1)
+
+	city_2 = cur.execute('SELECT walking FROM Mobility WHERE subregion = "Minneapolis"')
+	all_walking_for_city_2 = city_2.fetchall()
+	initial_walking_value_for_city_2 = all_walking_for_city_2[0]
+	final_walking_value_for_city_2 = all_walking_for_city_2[-1]
+	str_inital_2 = str(initial_walking_value_for_city_2)
+	str_final_2 = str(final_walking_value_for_city_2)
+	strip_inital_2 = str_inital_2.strip('(),')
+	strip_final_2 = str_final_2.strip('(),')
+	total_walking_change_2 = int(strip_final_2) - int(strip_inital_2)
+	average_walking_change_2 = total_walking_change_2/len(all_walking_for_city_2)
+	avg_walking_increase.append(average_walking_change_2)
+
+	city_3 = cur.execute('SELECT walking FROM Mobility WHERE subregion = "Phoenix"')
+	all_walking_for_city_3 = city_3.fetchall()
+	initial_walking_value_for_city_3 = all_walking_for_city_3[0]
+	final_walking_value_for_city_3 = all_walking_for_city_3[-1]
+	str_inital_3 = str(initial_walking_value_for_city_3)
+	str_final_3 = str(final_walking_value_for_city_3)
+	strip_inital_3 = str_inital_3.strip('(),')
+	strip_final_3 = str_final_3.strip('(),')
+	total_walking_change_3 = int(strip_final_3) - int(strip_inital_3)
+	average_walking_change_3 = total_walking_change_3/len(all_walking_for_city_3)
+	avg_walking_increase.append(average_walking_change_3)
+
+	print(avg_walking_increase)
+
+
+	y_pos = np.arange(len(avg_walking_increase))
+	plt.bar(y_pos, avg_walking_increase, color = 'pink')
+	plt.xlabel("Counties")
+	plt.ylabel("Average Change in Walking")
+	plt.title("Average Change in Walking by City")
+	plt.xticks([0,1,2,3], x)
+	plt.show()
+
 cur, conn = setUpDatabase('covid.db')
 covid_visualization(cur, conn)
 vaccine_visualization(cur, conn)
+mobility_visualization(cur, conn)
