@@ -202,11 +202,11 @@ def mobility_visualization(cur, conn):
 
 #ISSUE!!!!!!!
 def covid_and_vaccine_visualization(cur, conn):
-    x_covid = ["Washtenaw", "Cuyahoga", "Hennepin", "Maricopa"]
+	x_covid = ["Washtenaw", "Cuyahoga", "Hennepin", "Maricopa"]
 	y_covid = [0, 50, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750]
-    avg_covid_increase = []
+	avg_covid_increase = []
 
-    county_0 = cur.execute('SELECT cases FROM Covid WHERE id = 0')
+	county_0 = cur.execute('SELECT cases FROM Covid WHERE id = 0')
 	all_cases_for_county_0 = county_0.fetchall()
 	initial_case_value_for_county_0 = all_cases_for_county_0[0]
 	final_case_value_for_county_0 = all_cases_for_county_0[-1]
