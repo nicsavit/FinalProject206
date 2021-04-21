@@ -35,17 +35,29 @@ def setUpDatabase(db_name):
 	cur = conn.cursor()
 	return cur, conn
 
-def setUpCountyTable(cur,conn):
+def setUpLocationTable(cur,conn):
+	states = [
+		"Michigan",
+		"Ohio",
+		"Minnesota",
+		"Arizona"
+	]
 	counties = [
 		"Washtenaw",
 		"Cuyahoga",
 		"Hennepin",
 		"Maricopa"
 	]
-	cur.execute("DROP TABLE IF EXISTS County")
-	cur.execute("CREATE TABLE County (id INTEGER PRIMARY KEY, county TEXT)")
-	for i in range(len(counties)):
-		cur.execute("INSERT INTO County (id,county) VALUES (?,?)",(i,counties[i]))
+	subregions = [
+		"Ann Arbor",
+		"Cleveland",
+		"Minneapolis",
+		"Phoenix"
+	]
+	cur.execute("DROP TABLE IF EXISTS Locations")
+	cur.execute("CREATE TABLE Locations (id INTEGER PRIMARY KEY, state TEXT, county TEXT, subregion TEXT)")
+	for i in range(len(states)):
+		cur.execute("INSERT INTO Locations (id, state, county, subregion) VALUES (?,?,?,?)",(i,states[i], counties[i], subregions[i]))
 	conn.commit()
 
 def setUpCovidCountyTable(cur, conn):
@@ -61,7 +73,7 @@ def setUpCovidCountyTable(cur, conn):
 		data = get_countydata(c, 30)
 
 		for day in data:
-			cur.execute('SELECT id FROM County WHERE county = ?', (day['county'],))
+			cur.execute('SELECT id FROM Locations WHERE county = ?', (day['county'],))
 			county_id = cur.fetchone()[0]
 
 			cur.execute('INSERT INTO Covid (id, date, cases, deaths) VALUES (?,?,?,?)', (county_id, day['date'], int(day['cases']), int(day['deaths']))) 
@@ -70,7 +82,7 @@ def setUpCovidCountyTable(cur, conn):
 
 def setUpMobilityTable(cur,conn):
 	cur.execute("DROP TABLE IF EXISTS Mobility")
-	cur.execute("CREATE TABLE Mobility (subregion TEXT, date TEXT, driving REAL, transit REAL, walking REAL)")
+	cur.execute("CREATE TABLE Mobility (id INTEGER, subregion TEXT, date TEXT, driving REAL, transit REAL, walking REAL)")
 	subregions = [
 		"Ann Arbor",
 		"Cleveland",
@@ -80,23 +92,13 @@ def setUpMobilityTable(cur,conn):
 	
 	for s in subregions:
 		data1 = get_mobilitydata(s)
-		#print(data1.keys())
+		cur.execute('SELECT id FROM Locations WHERE subregion = ?', (s,))
+		subregion_id = cur.fetchone()[0]
 		for day in data1['data']:
 			#print(day)
-			cur.execute('INSERT INTO Mobility (subregion, date, driving, transit, walking) VALUES (?,?,?,?,?)', (day['subregion_and_city'],day['date'], float(day['driving']), float(day['transit']),float(day['walking']))) 
+			cur.execute('INSERT INTO Mobility (id, subregion, date, driving, transit, walking) VALUES (?,?,?,?,?,?)', (subregion_id, day['subregion_and_city'],day['date'], float(day['driving']), float(day['transit']),float(day['walking']))) 
 	conn.commit()
-def setUpStateTable(cur,conn):
-	states = [
-		"Michigan",
-		"Ohio",
-		"Minnesota",
-		"Arizona"
-	]
-	cur.execute("DROP TABLE IF EXISTS States")
-	cur.execute("CREATE TABLE States (id INTEGER PRIMARY KEY, state TEXT)")
-	for i in range(len(states)):
-		cur.execute("INSERT INTO States (id,state) VALUES (?,?)",(i,states[i]))
-	conn.commit()
+
 
 def setUpVaccineTable(cur,conn):
 	cur.execute("DROP TABLE IF EXISTS Vaccination")
@@ -109,7 +111,7 @@ def setUpVaccineTable(cur,conn):
 	]
 	for s in states:
 		data = get_vaccinedata(s,30)
-		cur.execute('SELECT id FROM States WHERE state= ?', (s,))
+		cur.execute('SELECT id FROM Locations WHERE state= ?', (s,))
 		state_id = cur.fetchone()[0]
 		for key in data['timeline']:
 			cur.execute('INSERT INTO Vaccination (id, state, date, doses_admin) VALUES (?,?,?,?)', (state_id, data['state'], key, int(data['timeline'][key])))
@@ -127,10 +129,11 @@ def cases_and_vaccine_correlation(cur,conn):
 
 
 
+
 cur, conn = setUpDatabase('covid.db')
-setUpCountyTable(cur,conn)
+setUpLocationTable(cur,conn)
 setUpCovidCountyTable(cur, conn)
 setUpMobilityTable(cur,conn)
-setUpStateTable(cur,conn)
+
 setUpVaccineTable(cur,conn)
-cases_and_vaccine_correlation(cur,conn)
+# cases_and_vaccine_correlation(cur,conn)
