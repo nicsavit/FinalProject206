@@ -115,7 +115,15 @@ def setUpVaccineTable(cur,conn):
 			cur.execute('INSERT INTO Vaccination (id, state, date, doses_admin) VALUES (?,?,?,?)', (state_id, data['state'], key, int(data['timeline'][key])))
 		conn.commit()
 # def cases_and_vaccine_correlation(cur,conn):
-# 	cur.execute("SELECT cases FROM Covid")
+# 	cur.execute("SELECT Covid.cases, Vaccination.doses_admin FROM Covid LEFT JOIN Vaccination ON Covid.id = Vaccination.id")
+# 	corr = []
+# 	for row in cur:
+# 		corr.append(row)
+# 	l = []
+# 	for tup in corr:
+		
+# 	print(corr)
+# 	return corr
 
 
 
@@ -125,3 +133,4 @@ setUpCovidCountyTable(cur, conn)
 setUpMobilityTable(cur,conn)
 setUpVaccineTable(cur,conn)
 setUpStateTable(cur,conn)
+cases_and_vaccine_correlation(cur,conn)
