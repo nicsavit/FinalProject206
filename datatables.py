@@ -116,7 +116,7 @@ def cases_and_vaccine_correlation(cur,conn):
 		if tup[0] not in l:
 			l[tup[0]] = tup[1]
 	return l
-	
+
 
 
 

@@ -12,6 +12,10 @@ def covid_visualization(cur, conn):
 	y = [0, 50, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750]
 	avg_covid_increase = []
 
+	#FILE 1
+	file1 = open("avg_case_changes.txt", "w")
+	file1.write("Average Covid Case Changes Per Day for Last 25 Days\n")
+
 	county_0 = cur.execute('SELECT cases FROM Covid WHERE id = 0')
 	all_cases_for_county_0 = county_0.fetchall()
 	initial_case_value_for_county_0 = all_cases_for_county_0[0]
@@ -23,6 +27,8 @@ def covid_visualization(cur, conn):
 	total_case_change_0 = int(strip_final_0) - int(strip_inital_0)
 	average_case_change_0 = total_case_change_0/len(all_cases_for_county_0)
 	avg_covid_increase.append(average_case_change_0)
+
+	file1.write(f"Washtenaw - {average_case_change_0}\n")
 
 	county_1 = cur.execute('SELECT cases FROM Covid WHERE id = 1')
 	all_cases_for_county_1 = county_1.fetchall()
@@ -36,6 +42,8 @@ def covid_visualization(cur, conn):
 	average_case_change_1 = total_case_change_1/len(all_cases_for_county_1)
 	avg_covid_increase.append(average_case_change_1)
 
+	file1.write(f"Cuyahoga- {average_case_change_1}\n")
+
 	county_2 = cur.execute('SELECT cases FROM Covid WHERE id = 2')
 	all_cases_for_county_2 = county_2.fetchall()
 	initial_case_value_for_county_2 = all_cases_for_county_2[0]
@@ -48,6 +56,8 @@ def covid_visualization(cur, conn):
 	average_case_change_2 = total_case_change_2/len(all_cases_for_county_2)
 	avg_covid_increase.append(average_case_change_2)
 
+	file1.write(f"Hennepin - {average_case_change_2}\n")
+
 	county_3 = cur.execute('SELECT cases FROM Covid WHERE id = 3')
 	all_cases_for_county_3 = county_3.fetchall()
 	initial_case_value_for_county_3 = all_cases_for_county_3[0]
@@ -59,6 +69,9 @@ def covid_visualization(cur, conn):
 	total_case_change_3 = int(strip_final_3) - int(strip_inital_3)
 	average_case_change_3 = total_case_change_3/len(all_cases_for_county_3)
 	avg_covid_increase.append(average_case_change_3)
+
+	file1.write(f"Maricopa - {average_case_change_3}\n")
+	file1.close()
 
 	print(avg_covid_increase)
 
@@ -73,10 +86,13 @@ def covid_visualization(cur, conn):
 
 
 def vaccine_visualization(cur, conn):
-	# increase of covid cases per day. average change in walking percentage
 	x = ["Michigan", "Ohio", "Minnesota", "Arizona"]
 	y = [0, 50, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750]
 	avg_vaccine_increase = []
+
+	#FILE 2
+	file2 = open("avg_vaccine_changes.txt", "w")
+	file2.write("Average Vaccine Changes Per Day for Last 25 Days\n")
 
 	state_0 = cur.execute("SELECT doses_admin FROM Vaccination WHERE state = 'Michigan'")
 	all_vaccines_for_state_0 = state_0.fetchall()
@@ -90,6 +106,8 @@ def vaccine_visualization(cur, conn):
 	average_vaccine_change_0 = total_vaccine_change_0/len(all_vaccines_for_state_0)
 	avg_vaccine_increase.append(average_vaccine_change_0)
 
+	file2.write(f"Michigan - {average_vaccine_change_0}\n")
+
 	state_1 = cur.execute("SELECT doses_admin FROM Vaccination WHERE state = 'Ohio'")
 	all_vaccines_for_state_1 = state_1.fetchall()
 	initial_vaccine_value_for_state_1 = all_vaccines_for_state_1[0]
@@ -102,6 +120,8 @@ def vaccine_visualization(cur, conn):
 	average_vaccine_change_1 = total_vaccine_change_1/len(all_vaccines_for_state_1)
 	avg_vaccine_increase.append(average_vaccine_change_1)
 
+	file2.write(f"Ohio - {average_vaccine_change_1}\n")
+
 	state_2 = cur.execute("SELECT doses_admin FROM Vaccination WHERE state = 'Minnesota'")
 	all_vaccines_for_state_2 = state_2.fetchall()
 	initial_vaccine_value_for_state_2 = all_vaccines_for_state_2[0]
@@ -113,6 +133,8 @@ def vaccine_visualization(cur, conn):
 	total_vaccine_change_2 = int(strip_final_2) - int(strip_inital_2)
 	average_vaccine_change_2 = total_vaccine_change_2/len(all_vaccines_for_state_2)
 	avg_vaccine_increase.append(average_vaccine_change_2)
+	
+	file2.write(f"Minnesota - {average_vaccine_change_2}\n")
 
 	state_3 = cur.execute("SELECT doses_admin FROM Vaccination WHERE state = 'Arizona'")
 	all_vaccines_for_state_3 = state_3.fetchall()
@@ -125,6 +147,9 @@ def vaccine_visualization(cur, conn):
 	total_vaccine_change_3 = int(strip_final_3) - int(strip_inital_3)
 	average_vaccine_change_3 = total_vaccine_change_3/len(all_vaccines_for_state_3)
 	avg_vaccine_increase.append(average_vaccine_change_3)
+
+	file2.write(f"Arizona - {average_vaccine_change_3}\n")
+	file2.close()
 
 	print(avg_vaccine_increase)
 
@@ -142,6 +167,10 @@ def mobility_visualization(cur, conn):
 	y = [0, 50, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750]
 	avg_walking_increase = []
 
+	#FILE 3
+	file3 = open("avg_mobility_changes.txt", "w")
+	file3.write("Average Walking Changes Per Day\n")
+
 	city_0 = cur.execute('SELECT walking FROM Mobility WHERE subregion = "Ann Arbor"')
 	all_walking_for_city_0 = city_0.fetchall()
 	initial_walking_value_for_city_0 = all_walking_for_city_0[0]
@@ -153,6 +182,8 @@ def mobility_visualization(cur, conn):
 	total_walking_change_0 = float(strip_final_0) - float(strip_inital_0)
 	average_walking_change_0 = total_walking_change_0/len(all_walking_for_city_0)
 	avg_walking_increase.append(average_walking_change_0)
+
+	file3.write(f"Ann Arbor - {average_walking_change_0}\n")
 
 	city_1 = cur.execute('SELECT walking FROM Mobility WHERE subregion = "Cleveland"')
 	all_walking_for_city_1 = city_1.fetchall()
@@ -166,6 +197,8 @@ def mobility_visualization(cur, conn):
 	average_walking_change_1 = total_walking_change_1/len(all_walking_for_city_1)
 	avg_walking_increase.append(average_walking_change_1)
 
+	file3.write(f"Cleveland - {average_walking_change_1}\n")
+
 	city_2 = cur.execute('SELECT walking FROM Mobility WHERE subregion = "Minneapolis"')
 	all_walking_for_city_2 = city_2.fetchall()
 	initial_walking_value_for_city_2 = all_walking_for_city_2[0]
@@ -177,6 +210,8 @@ def mobility_visualization(cur, conn):
 	total_walking_change_2 = float(strip_final_2) - float(strip_inital_2)
 	average_walking_change_2 = total_walking_change_2/len(all_walking_for_city_2)
 	avg_walking_increase.append(average_walking_change_2)
+
+	file3.write(f"Minneapolis - {average_walking_change_2}\n")
 
 	city_3 = cur.execute('SELECT walking FROM Mobility WHERE subregion = "Phoenix"')
 	all_walking_for_city_3 = city_3.fetchall()
@@ -190,6 +225,9 @@ def mobility_visualization(cur, conn):
 	average_walking_change_3 = total_walking_change_3/len(all_walking_for_city_3)
 	avg_walking_increase.append(average_walking_change_3)
 
+	file3.write(f"Phoenix - {average_walking_change_3}\n")
+	file3.close()
+
 	print(avg_walking_increase)
 
 
@@ -201,15 +239,12 @@ def mobility_visualization(cur, conn):
 	plt.xticks([0,1,2,3], x)
 	plt.show()
 
-#ISSUE!!!!!!!
+
 def covid_and_vaccine_visualization(cur, conn):
-<<<<<<< HEAD
-	#File Writing	
+	#File 4	
 	csvfile = open('covid_vaccine.csv', 'w')
 	write = csv.writer(csvfile)
 	write.writerow(['state', 'Average Covid Increase', 'Average Vaccine Increase'])
-=======
->>>>>>> c4a8287739a1728d33c38dcd3bd80c59c00e2ebf
 	x_covid = ["Washtenaw", "Cuyahoga", "Hennepin", "Maricopa"]
 	y_covid = [0, 50, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750]
 	avg_covid_increase = []
@@ -225,6 +260,7 @@ def covid_and_vaccine_visualization(cur, conn):
 	total_case_change_0 = int(strip_final_0) - int(strip_inital_0)
 	average_case_change_0 = total_case_change_0/len(all_cases_for_county_0)
 	avg_covid_increase.append(average_case_change_0)
+	
 	
 
 	county_1 = cur.execute('SELECT cases FROM Covid WHERE id = 1')
@@ -325,31 +361,20 @@ def covid_and_vaccine_visualization(cur, conn):
 	print(avg_vaccine_increase)
 
 
-<<<<<<< HEAD
 	c = avg_covid_increase
-=======
-    c = avg_covid_increase
->>>>>>> c4a8287739a1728d33c38dcd3bd80c59c00e2ebf
 	v = avg_vaccine_increase
 
 	N = 4
 	y_pos = np.arange(N)
 	width = 0.35
-<<<<<<< HEAD
 	# fig = plt.figure()
 	# ax = fig.add_axes([0,0,1,1])
 	fig, ax = plt.subplots()
 	x = np.arange(len(x_vaccine))
-=======
-	fig = plt.figure()
-	ax = fig.add_axes([0,0,1,1])
-
->>>>>>> c4a8287739a1728d33c38dcd3bd80c59c00e2ebf
 	p1 = ax.bar(y_pos, c, width, label='Average Covid Increase')
 	p2 = ax.bar(y_pos + width, v, width, label='Average Vaccine Increase')
 	ax.set_ylabel('Average Increase of Vaccines and Covid Cases Per Day')
 	ax.set_title('Average Increase of Vaccines and Covid Cases Per Day by Location')
-<<<<<<< HEAD
 	ax.set_xticks(x)
 	ax.set_xticklabels(x_vaccine)
 	ax.legend(loc = 'best')
@@ -366,67 +391,9 @@ def mobility_visualization_2(cur, conn):
 	y = [0, 50, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750]
 	avg_driving_increase = []
 
-	city_0 = cur.execute('SELECT driving FROM Mobility WHERE subregion = "Ann Arbor"')
-	all_driving_for_city_0 = city_0.fetchall()
-	initial_driving_value_for_city_0 = all_driving_for_city_0[0]
-	final_driving_value_for_city_0 = all_driving_for_city_0[-1]
-	str_inital_0 = str(initial_driving_value_for_city_0)
-	str_final_0 = str(final_driving_value_for_city_0)
-	strip_inital_0 = str_inital_0.strip('(),')
-	strip_final_0 = str_final_0.strip('(),')
-	total_driving_change_0 = float(strip_final_0) - float(strip_inital_0)
-	average_driving_change_0 = total_driving_change_0/len(all_driving_for_city_0)
-	avg_driving_increase.append(average_driving_change_0)
-
-	city_1 = cur.execute('SELECT driving FROM Mobility WHERE subregion = "Cleveland"')
-	all_driving_for_city_1 = city_1.fetchall()
-	initial_driving_value_for_city_1 = all_driving_for_city_1[0]
-	final_driving_value_for_city_1 = all_driving_for_city_1[-1]
-	str_inital_1 = str(initial_driving_value_for_city_1)
-	str_final_1 = str(final_driving_value_for_city_1)
-	strip_inital_1 = str_inital_1.strip('(),')
-	strip_final_1 = str_final_1.strip('(),')
-	total_driving_change_1 = float(strip_final_1) - float(strip_inital_1)
-	average_driving_change_1 = total_driving_change_1/len(all_driving_for_city_1)
-	avg_driving_increase.append(average_driving_change_1)
-
-	city_2 = cur.execute('SELECT driving FROM Mobility WHERE subregion = "Minneapolis"')
-	all_driving_for_city_2 = city_2.fetchall()
-	initial_driving_value_for_city_2 = all_driving_for_city_2[0]
-	final_driving_value_for_city_2 = all_driving_for_city_2[-1]
-	str_inital_2 = str(initial_driving_value_for_city_2)
-	str_final_2 = str(final_driving_value_for_city_2)
-	strip_inital_2 = str_inital_2.strip('(),')
-	strip_final_2 = str_final_2.strip('(),')
-	total_driving_change_2 = float(strip_final_2) - float(strip_inital_2)
-	average_driving_change_2 = total_driving_change_2/len(all_driving_for_city_2)
-	avg_driving_increase.append(average_driving_change_2)
-
-	city_3 = cur.execute('SELECT driving FROM Mobility WHERE subregion = "Phoenix"')
-	all_driving_for_city_3 = city_3.fetchall()
-	initial_driving_value_for_city_3 = all_driving_for_city_3[0]
-	final_driving_value_for_city_3 = all_driving_for_city_3[-1]
-	str_inital_3 = str(initial_driving_value_for_city_3)
-	str_final_3 = str(final_driving_value_for_city_3)
-	strip_inital_3 = str_inital_3.strip('(),')
-	strip_final_3 = str_final_3.strip('(),')
-	total_driving_change_3 = float(strip_final_3) - float(strip_inital_3)
-	average_driving_change_3 = total_driving_change_3/len(all_driving_for_city_3)
-	avg_driving_increase.append(average_driving_change_3)
-
-	print(avg_driving_increase)
-
-
-=======
-	ax.set_xticks([0,1,2,3], x_vaccine)
-	ax.legend(loc = 'best')
-	ax.autoscale_view()
-	plt.show()
-
-def mobility_visualization_2(cur, conn):
-	x = ["Ann Arbor", "Cleveland", "Minneapolis", "Phoenix"]
-	y = [0, 50, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750]
-	avg_driving_increase = []
+	#FILE 5
+	file5 = open("avg_mobility_changes_drive.txt", "w")
+	file5.write("Average Driving Changes Per Day\n")
 
 	city_0 = cur.execute('SELECT driving FROM Mobility WHERE subregion = "Ann Arbor"')
 	all_driving_for_city_0 = city_0.fetchall()
@@ -440,6 +407,8 @@ def mobility_visualization_2(cur, conn):
 	average_driving_change_0 = total_driving_change_0/len(all_driving_for_city_0)
 	avg_driving_increase.append(average_driving_change_0)
 
+	file5.write(f"Ann Arbor - {average_driving_change_0}\n")
+
 	city_1 = cur.execute('SELECT driving FROM Mobility WHERE subregion = "Cleveland"')
 	all_driving_for_city_1 = city_1.fetchall()
 	initial_driving_value_for_city_1 = all_driving_for_city_1[0]
@@ -451,6 +420,8 @@ def mobility_visualization_2(cur, conn):
 	total_driving_change_1 = float(strip_final_1) - float(strip_inital_1)
 	average_driving_change_1 = total_driving_change_1/len(all_driving_for_city_1)
 	avg_driving_increase.append(average_driving_change_1)
+
+	file5.write(f"Cleveland - {average_driving_change_1}\n")
 
 	city_2 = cur.execute('SELECT driving FROM Mobility WHERE subregion = "Minneapolis"')
 	all_driving_for_city_2 = city_2.fetchall()
@@ -464,6 +435,8 @@ def mobility_visualization_2(cur, conn):
 	average_driving_change_2 = total_driving_change_2/len(all_driving_for_city_2)
 	avg_driving_increase.append(average_driving_change_2)
 
+	file5.write(f"Minneapolis - {average_driving_change_2}\n")
+
 	city_3 = cur.execute('SELECT driving FROM Mobility WHERE subregion = "Phoenix"')
 	all_driving_for_city_3 = city_3.fetchall()
 	initial_driving_value_for_city_3 = all_driving_for_city_3[0]
@@ -476,10 +449,11 @@ def mobility_visualization_2(cur, conn):
 	average_driving_change_3 = total_driving_change_3/len(all_driving_for_city_3)
 	avg_driving_increase.append(average_driving_change_3)
 
+	file5.write(f"Phoenix - {average_driving_change_3}\n")
+
 	print(avg_driving_increase)
 
 
->>>>>>> c4a8287739a1728d33c38dcd3bd80c59c00e2ebf
 	y_pos = np.arange(len(avg_driving_increase))
 	plt.bar(y_pos, avg_driving_increase, color = 'purple')
 	plt.xlabel("Counties")
@@ -494,7 +468,3 @@ vaccine_visualization(cur, conn)
 mobility_visualization(cur, conn)
 covid_and_vaccine_visualization(cur, conn)
 mobility_visualization_2(cur, conn)
-<<<<<<< HEAD
-
-=======
->>>>>>> c4a8287739a1728d33c38dcd3bd80c59c00e2ebf
